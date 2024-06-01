@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".lipReading.CameraCopy">
+    tools:context=".lipReading.LipReading">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,8 +20,6 @@
             app:layout_constraintBottom_toTopOf="@id/camara_preview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-
-
             app:layout_constraintTop_toTopOf="parent">
 
 
@@ -77,7 +75,7 @@
             android:layout_marginVertical="30dp"
             android:background="@drawable/login_page_btn_sample"
             android:paddingVertical="10dp"
-            android:text="립리딩 시작"
+            android:text="발음테스트 시작"
             android:textColor="#fff"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -88,26 +86,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:maxLines="2"
-            android:textColor="#000"
+
             android:padding="20dp"
             android:text="자막"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:visibility="invisible"
+            android:textColor="#000"
             app:layout_constraintBottom_toTopOf="@id/btn_lr_stop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!--    <FrameLayout-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="0dp"-->
-        <!--        android:layout_marginTop="10dp"-->
-        <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintEnd_toEndOf="parent"-->
-        <!--        app:layout_constraintTop_toBottomOf="@id/imgbtn_setting"-->
-        <!--        app:layout_constraintBottom_toTopOf="@id/tv_subtitle"-->
-        <!--        android:background="#D9D9D9"/>-->
+
 
         <androidx.camera.view.PreviewView
             android:id="@+id/camara_preview"

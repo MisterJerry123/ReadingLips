@@ -30,6 +30,7 @@ import androidx.camera.video.QualitySelector
 import androidx.camera.video.VideoRecordEvent
 import androidx.core.content.PermissionChecker
 import com.readinglips.databinding.ActivityCameraTestBinding
+import com.readinglips.databinding.ActivityLipReadingDoingBinding
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -37,7 +38,7 @@ import java.util.Locale
 typealias LumaListener = (luma: Double) -> Unit
 
 class CameraTest : AppCompatActivity() {
-    private lateinit var viewBinding: ActivityCameraTestBinding
+    private lateinit var viewBinding: ActivityLipReadingDoingBinding
 
     private var imageCapture: ImageCapture? = null
 
@@ -48,7 +49,7 @@ class CameraTest : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewBinding = ActivityCameraTestBinding.inflate(layoutInflater)
+        viewBinding = ActivityLipReadingDoingBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
         // Request camera permissions
@@ -61,7 +62,7 @@ class CameraTest : AppCompatActivity() {
 
         // Set up the listeners for take photo and video capture buttons
 //        viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
-//        viewBinding.videoCaptureButton.setOnClickListener { captureVideo() }
+        viewBinding.tvSubtitle.setOnClickListener { captureVideo() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
@@ -81,7 +82,7 @@ class CameraTest : AppCompatActivity() {
             val preview = Preview.Builder()
                 .build()
                 .also {
-                    it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
+                    it.setSurfaceProvider(viewBinding.camaraPreview.surfaceProvider)
                 }
 
             // Select back camera as a default

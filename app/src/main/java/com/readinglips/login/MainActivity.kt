@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import com.google.gson.JsonParser
 import com.readinglips.databinding.ActivityMainBinding
+import com.readinglips.lipReading.CameraCopy
 import com.readinglips.lipReading.LipReading
 import com.readinglips.login.singup.InputId
 import com.withsejong.retrofit.LoginResponse
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val intentCreateAccount = Intent(this, InputId::class.java)
-        val intentLogin = Intent(this, LipReading::class.java)
+        val intentLogin = Intent(this, CameraCopy::class.java)
 
         binding.btnSignup.setOnClickListener {
             startActivity(intentCreateAccount)

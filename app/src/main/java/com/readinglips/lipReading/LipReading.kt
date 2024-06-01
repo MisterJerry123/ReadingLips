@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.core.content.ContextCompat
-import com.readinglips.R
 import com.readinglips.databinding.ActivityLipReadingBinding
 import com.readinglips.pronunciationTest.PronunciationTest
 
@@ -19,9 +18,13 @@ class LipReading : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        //카메라 코드 추가
+
+        //
+
         //binding.tablayout.addTab(binding.tablayout.newTab().setIcon(R.drawable.icon_setting))
         //binding.tablayout.addTab(binding.tablayout.newTab().setIcon(R.drawable.icon_camerachange))
-        val intent = Intent(this,LipReadingDoing::class.java)
+        val intent = Intent(this,CameraCopyAudio::class.java)
 
         binding.btnLrStart.setOnClickListener {
 

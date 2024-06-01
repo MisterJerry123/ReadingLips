@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item android:id="@+id/menu_title"
+        android:title="Reading Lips"
+        />
+
+    <item android:id="@+id/menu_lipreading_function"
+        android:title="주요기능"
+        >
+
+        <menu>
+            <item android:id="@+id/menu_lipreading"
+                android:title="립 리딩"
+                app:showAsAction="ifRoom"                />
+            <item android:id="@+id/menu_pronounce_test"
+                android:title="발음 테스트"
+                app:showAsAction="ifRoom"/>
+
+        </menu>
+
+
+    </item>
+
+        <item android:id="@+id/menu_mypage"
+            android:title="마이페이지">
+
+            <menu>
+                <item android:id="@+id/menu_lipreading_history"
+                    android:title="립리딩 내역조회"
+                    app:showAsAction="ifRoom"/>
+                <item android:id="@+id/menu_pronunciation_history"
+                    android:title="발음테스트 내역조회"
+                    app:showAsAction="ifRoom"/>
+
+            </menu>
+        </item>
+
+    <item android:id="@+id/menu_developers"
+        android:title="Lip Reading Developers"
+        >
+
+        <menu>
+            <item android:id="@+id/menu_introducing"
+                android:title="CREDITS"
+                app:showAsAction="ifRoom"
+                />
+        </menu>
+    </item>
+
+
+
+</menu>
