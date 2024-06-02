@@ -8,10 +8,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.readinglips.R
 import com.readinglips.databinding.ActivityPronunciationTestHistoryBinding
 import com.readinglips.lipReading.CameraCopy
 import com.readinglips.lipReading.PronunciationTestNEW
+import com.withsejong.retrofit.LoadPronunciationHistoryResponse
 
 class PronunciationTestHistory:AppCompatActivity() {
     private lateinit var binding : ActivityPronunciationTestHistoryBinding
@@ -23,6 +26,17 @@ class PronunciationTestHistory:AppCompatActivity() {
 
         binding = ActivityPronunciationTestHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
+        //TODO 추후에 서버에서 받은 데이터로 띄울 것ㅑ
+        val mockData = arrayListOf <LoadPronunciationHistoryResponse>(
+            LoadPronunciationHistoryResponse("간장공장공장장","간장공장공장장",1.0),
+            LoadPronunciationHistoryResponse("된장공장공장장","됀장공장공장장",0.8),
+
+            LoadPronunciationHistoryResponse("쌈장공장공장장","썀장굥장굥장장",.6),
+
+            )
 
 
         val drawerbtn = binding.ibtnHamburgerManu
@@ -71,5 +85,9 @@ class PronunciationTestHistory:AppCompatActivity() {
             }
             true
         }
+
+
+        binding.rcvTestHistory.adapter=PronunciationTestHistoryAdapter(mockData)
+        binding.rcvTestHistory.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
     }
 }

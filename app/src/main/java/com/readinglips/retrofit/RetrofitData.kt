@@ -35,6 +35,11 @@ data class LoadPronunciationHistoryResponse(
     val accuracy: Double
 )
 
+data class LoadLipReadingHistoryResponse(
+    val subtitle:String,
+    val createdAt:String
+)
+
 //
 //data class ChangeForgotPassword(
 //    val studentId: String,

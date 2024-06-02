@@ -42,6 +42,13 @@ interface Api {
     ):Call<ArrayList<LoadPronunciationHistoryResponse>>
 
 
+    @GET("/subtitle")
+    fun loadLipReadingHistory(
+        @Query("userEmail") userEmail : String
+    ):Call<ArrayList<LoadLipReadingHistoryResponse>>
+
+
+
 
 
     //아래 api는 모두 지울 것

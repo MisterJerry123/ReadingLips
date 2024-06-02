@@ -8,11 +8,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.readinglips.R
 import com.readinglips.databinding.ActivityLipreadingHistoryBinding
 import com.readinglips.databinding.ActivityPronunciationTestHistoryBinding
 import com.readinglips.lipReading.CameraCopy
 import com.readinglips.lipReading.PronunciationTestNEW
+import com.withsejong.retrofit.LoadLipReadingHistoryResponse
 
 class LipReadingHistory:AppCompatActivity() {
     private lateinit var binding : ActivityLipreadingHistoryBinding
@@ -24,6 +26,18 @@ class LipReadingHistory:AppCompatActivity() {
         binding = ActivityLipreadingHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        val mockData = arrayListOf<LoadLipReadingHistoryResponse>(
+            LoadLipReadingHistoryResponse("안녕하시요","2024-06-02T18:52:23.363Z"),
+            LoadLipReadingHistoryResponse("하이 헬로","2024-06-03T12:52:23.363Z"),
+
+            LoadLipReadingHistoryResponse("김태식의 두마리 치킨","2024-06-03T18:52:23.363Z"),
+
+            LoadLipReadingHistoryResponse("이다예 복싱장","2024-06-04T02:52:23.363Z"),
+
+
+
+            )
 
         val drawerbtn = binding.ibtnHamburgerManu
         drawerbtn.setOnClickListener {
@@ -71,6 +85,13 @@ class LipReadingHistory:AppCompatActivity() {
             }
             true
         }
+
+
+
+        binding.rcvLipReadingHistory.adapter = LipReadingHistoryAdapter(mockData)
+        binding.rcvLipReadingHistory.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+
+
 
     }
 

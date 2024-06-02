@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="10dp">
+
+    <TextView
+        android:id="@+id/tv_original_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:text="원본문장 : "
+        android:textColor="#000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_after_test_text"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingStart="10dp"
+        android:text="발음분석 결과 : "
+        android:textColor="#000"
+        app:layout_constraintStart_toStartOf="@+id/tv_original_text"
+        app:layout_constraintTop_toBottomOf="@id/tv_original_text"
+
+
+        />
+
+    <TextView
+        android:id="@+id/tv_accuracy_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingStart="10dp"
+        android:text="정확도 : "
+        android:textColor="#000"
+        app:layout_constraintStart_toStartOf="@+id/tv_after_test_text"
+
+
+        app:layout_constraintTop_toBottomOf="@id/tv_after_test_text" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="#000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_accuracy_indicator" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
