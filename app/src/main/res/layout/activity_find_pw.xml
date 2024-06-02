@@ -66,15 +66,19 @@
         android:layout_marginHorizontal="30dp"
         android:text="이메일"
         android:textSize="15sp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toTopOf="@id/et_id"
         app:layout_constraintEnd_toEndOf="@id/et_id"
-        app:layout_constraintStart_toStartOf="@id/et_id" />
+        app:layout_constraintStart_toStartOf="@id/et_id"
+        app:layout_constraintTop_toBottomOf="@id/tv_explain"
+
+        />
 
     <TextView
+        android:id="@+id/tv_explain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="리딩립스에서 사용할\n이메일을 입력해주세요!"
+        android:text="비밀번호를 찾기 위해 \n리딩립스에서 사용했던 이메일을 입력해주세요!"
         android:textAlignment="center"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@id/tv_id"

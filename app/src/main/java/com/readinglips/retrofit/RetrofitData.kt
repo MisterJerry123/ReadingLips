@@ -40,6 +40,16 @@ data class LoadLipReadingHistoryResponse(
     val createdAt:String
 )
 
+data class SendEmailCodeResponse(
+    val email:String,
+    val code:String,
+    val createdAt : String
+)
+
+data class ChangePwResponse(
+    val email: String
+)
+
 //
 //data class ChangeForgotPassword(
 //    val studentId: String,

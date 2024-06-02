@@ -43,8 +43,15 @@
             android:name=".lipReading.ExperimentalFunctionFragment"
             android:exported="false" />
         <activity
-            android:name=".login.MainActivity"
+            android:name=".lipReading.CameraCopy"
             android:exported="false" />
+        <activity android:name=".login.singup.InputInformation"
+            android:exported="false"/>
+        <activity android:name=".login.fountPassword.ChangePassword"
+            android:exported="false"/>
+
+        <activity android:name=".login.fountPassword.FindPassword"
+            android:exported="false"/>
         <activity
             android:name=".mypage.PronunciationTestHistory"
             android:exported="false" />
@@ -66,7 +73,7 @@
             android:name=".login.singup.CreatedAccount"
             android:exported="false" />
         <activity
-            android:name=".login.singup.InputId"
+            android:name=".login.singup.CheckEmail"
             android:exported="false" />
         <activity
             android:name=".lipReading.LipReadingDoing_old"
@@ -90,7 +97,7 @@
             android:name=".lipReading.LipreadingTestAudio"
             android:exported="false" />
         <activity
-            android:name=".lipReading.CameraCopy"
+            android:name=".login.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

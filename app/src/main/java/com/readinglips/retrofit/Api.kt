@@ -47,6 +47,22 @@ interface Api {
         @Query("userEmail") userEmail : String
     ):Call<ArrayList<LoadLipReadingHistoryResponse>>
 
+    @GET("/user/email/verification-request")
+    fun sendEmailCode(
+        @Query("email") email:String,
+        @Query("type") type:Int
+    ):Call<SendEmailCodeResponse>
+
+    @POST("/user/email/verification")
+    fun checkEmailCode(
+        @Body jsonParams: JsonElement
+    ):Call<Boolean>
+
+    @POST("/change-password")
+    fun changePw(
+        @Body jsonParams: JsonElement
+    ):Call<ChangePwResponse>
+
 
 
 

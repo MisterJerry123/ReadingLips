@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.MainActivity">
+    tools:context=".login.fountPassword.ChangePassword">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="청각장애인들을 위한"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,43 +30,22 @@
         app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_signup"
+        android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="50dp"
         android:background="@drawable/login_page_btn_sample"
-        android:text="Sign up"
+        android:text="Next"
         android:textAllCaps="false"
         android:textColor="#fff"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
 
 
-        app:layout_constraintStart_toStartOf="parent"
 
         />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/login_page_btn_sample"
-        android:text="Login"
-        android:textAllCaps="false"
-        android:textColor="#fff"
-
-        android:textSize="20sp"
-        android:textStyle="bold"
-
-        app:layout_constraintBottom_toTopOf="@id/btn_signup"
-        app:layout_constraintEnd_toEndOf="@id/btn_signup"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/btn_signup" />
 
     <EditText
         android:id="@+id/et_password"
@@ -78,9 +58,7 @@
         android:paddingHorizontal="20dp"
 
         android:paddingVertical="10dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_login"
-        app:layout_constraintEnd_toEndOf="@id/btn_signup"
-        app:layout_constraintStart_toStartOf="@id/btn_signup" />
+        app:layout_constraintBottom_toTopOf="@id/et_password2" />
 
     <TextView
         android:id="@+id/tv_password"
@@ -93,7 +71,17 @@
         app:layout_constraintBottom_toTopOf="@id/et_password"
         app:layout_constraintEnd_toEndOf="@id/et_password"
         app:layout_constraintStart_toStartOf="@id/et_password" />
-
+    <TextView
+        android:id="@+id/tv_password2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:text="비밀번호 확인"
+        android:layout_marginBottom="10dp"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/et_password2"
+        app:layout_constraintEnd_toEndOf="@id/et_password"
+        app:layout_constraintStart_toStartOf="@id/et_password" />
 
     <EditText
 
@@ -101,38 +89,69 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginBottom="20dp"
         android:background="@drawable/login_page_et_sample"
         android:inputType="textEmailAddress"
         android:paddingHorizontal="20dp"
 
+        android:layout_marginBottom="50dp"
+
         android:paddingVertical="10dp"
-        app:layout_constraintBottom_toTopOf="@id/tv_password"
+        app:layout_constraintBottom_toTopOf="@id/et_password"
         app:layout_constraintEnd_toEndOf="@id/et_password"
         app:layout_constraintStart_toStartOf="@id/et_password" />
+    <TextView
+        android:id="@+id/tv_email_duplicated_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:visibility="invisible"
+
+        android:text="이미 가입된 이메일입니다."
+        android:textStyle="bold"
+        android:textColor="#f00"
+        app:layout_constraintStart_toStartOf="@id/tv_password"
+
+        app:layout_constraintTop_toBottomOf="@id/et_id"
+        />
 
     <TextView
         android:id="@+id/tv_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:text="아이디"
+        android:text="이메일"
         android:textSize="15sp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/et_id"
         app:layout_constraintEnd_toEndOf="@id/et_id"
         app:layout_constraintStart_toStartOf="@id/et_id" />
+
     <TextView
-        android:id="@+id/tv_lost_pw"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/underline_text_lost_password"
-        app:layout_constraintTop_toBottomOf="@id/btn_signup"
-        app:layout_constraintStart_toStartOf="@id/btn_signup"
-        app:layout_constraintEnd_toEndOf="@id/btn_signup"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="20dp"
+        android:text="리딩립스 계정의 비밀번호를 다시 설정해주세요!"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+
         />
+    <EditText
+
+        android:id="@+id/et_password2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:background="@drawable/login_page_et_sample"
+        android:inputType="textEmailAddress"
+        android:paddingHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+
+        android:paddingVertical="10dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_next"
+        app:layout_constraintEnd_toEndOf="@id/et_password"
+        app:layout_constraintStart_toStartOf="@id/et_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

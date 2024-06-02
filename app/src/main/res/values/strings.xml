@@ -7,4 +7,7 @@
     <string name="start_capture">Start Capture</string>
     <string name="stop_capture">Stop Capture</string>
 
+
+    <string name="underline_text_lost_password"><u>비밀번호를 잊으셨나요?</u></string>
+
 </resources>

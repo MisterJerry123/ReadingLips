@@ -1,7 +1,6 @@
 package com.readinglips.login
 
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,8 +8,9 @@ import android.widget.Toast
 import com.google.gson.JsonParser
 import com.readinglips.databinding.ActivityMainBinding
 import com.readinglips.lipReading.CameraCopy
-import com.readinglips.lipReading.LipReading
-import com.readinglips.login.singup.InputId
+import com.readinglips.login.fountPassword.ChangePassword
+import com.readinglips.login.fountPassword.FindPassword
+import com.readinglips.login.singup.CheckEmail
 import com.withsejong.retrofit.LoginResponse
 import com.withsejong.retrofit.RetrofitClient
 import org.json.JSONObject
@@ -27,11 +27,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val intentCreateAccount = Intent(this, InputId::class.java)
+        val intentCreateAccount = Intent(this, CheckEmail::class.java)
         val intentLogin = Intent(this, CameraCopy::class.java)
+        val intentForgotPw = Intent(this, FindPassword::class.java)
 
         binding.btnSignup.setOnClickListener {
             startActivity(intentCreateAccount)
+            finish()
+        }
+        binding.tvLostPw.setOnClickListener {
+            startActivity(intentForgotPw)
             finish()
         }
         binding.btnLogin.setOnClickListener {
