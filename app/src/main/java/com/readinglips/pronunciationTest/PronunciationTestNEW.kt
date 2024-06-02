@@ -45,7 +45,13 @@ import com.readinglips.R
 import com.readinglips.databinding.ActivityPronunciationTestDoingNewBinding
 import com.readinglips.mypage.LipReadingHistory
 import com.readinglips.mypage.PronunciationTestHistory
+import com.readinglips.pronunciationTest.PronunciationTestLoadingFragmentDialog
 import com.withsejong.retrofit.RetrofitClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -64,11 +70,15 @@ class PronunciationTestNEW:AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
 
     lateinit var drawer : DrawerLayout
+    private val loadingDialog = PronunciationTestLoadingFragmentDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPronunciationTestDoingNewBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
 
         val cameraSelectorSharedPreferences =getSharedPreferences("camera", MODE_PRIVATE)
         val editor = cameraSelectorSharedPreferences.edit()
@@ -314,6 +324,8 @@ class PronunciationTestNEW:AppCompatActivity() {
                     // 녹화가 완료되면 메시지를 등록하고 다시 텍스트 전환
                     is VideoRecordEvent.Finalize -> {
                         if (!recordEvent.hasError()) {
+                            showLoading()
+
                             val msg = "Video capture succeeded: " +
                                     "${recordEvent.outputResults.outputUri}"//동영상 저장경로
                             Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT)
@@ -322,7 +334,6 @@ class PronunciationTestNEW:AppCompatActivity() {
 
                             val returnFilePath = changeResolution(getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
                             Log.d("PronunciationTestNEW_TAG_new",returnFilePath.toString())
-
 
                             val videoBytes = convertVideoToBytes(returnFilePath.toString())
                             //val videoBytes = convertVideoToBytes(getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
@@ -345,19 +356,29 @@ class PronunciationTestNEW:AppCompatActivity() {
                             jsonObject.put("originalText", binding.tvSubtitle.text.toString())
                             //TODO 이거 바꾸셈 이메일 계정들의 아이디로
                             jsonObject.put("userEmail", "misterjerry12345@gmail.com")
+                            CoroutineScope(Dispatchers.Main).launch {
+                                loadingDialog.show(supportFragmentManager, loadingDialog.tag)
+                                withContext(Dispatchers.Default) {
 
-                            val pronunciationTestThread = Thread{
 
-                                Log.d("PronunciationTestNEW_TAG",jsonObject.toString())
-                                val response = RetrofitClient.instance.uploadPronunciationTestVideo(JsonParser.parseString(jsonObject.toString())).execute()
-                                if(response.isSuccessful){
-                                    Log.d("PronunciationTestNEW_TAG",response.body()?.accuracy.toString())
+                                    val pronunciationTestThread = Thread{
+
+                                        Log.d("PronunciationTestNEW_TAG",jsonObject.toString())
+                                        val response = RetrofitClient.instance.uploadPronunciationTestVideo(JsonParser.parseString(jsonObject.toString())).execute()
+                                        if(response.isSuccessful){
+                                            Log.d("PronunciationTestNEW_TAG",response.body()?.accuracy.toString())
+                                        }
+                                        Log.d("PronunciationTestNEW_TAG",response.toString())
+                                        Log.d("PronunciationTestNEW_TAG",response.body().toString())
+                                    }
+                                    pronunciationTestThread.join()
+                                    pronunciationTestThread.start()
+
                                 }
-                                Log.d("PronunciationTestNEW_TAG",response.toString())
-                                Log.d("PronunciationTestNEW_TAG",response.body().toString())
+                                loadingDialog.dismiss()
                             }
-                            pronunciationTestThread.join()
-                            pronunciationTestThread.start()
+
+
                         } else {
                             recording?.close()
                             recording = null
@@ -379,7 +400,18 @@ class PronunciationTestNEW:AppCompatActivity() {
                 }
             }
     }
+    private fun showLoading() {
+        CoroutineScope(Dispatchers.Main).launch {
+            loadingDialog.show(supportFragmentManager, loadingDialog.tag)
+            withContext(Dispatchers.Default) {
 
+
+
+
+            }
+            loadingDialog.dismiss()
+        }
+    }
     private fun startCamera() {
         // ProcessCameraProvider 인스턴스를 생성한다.
         // 카메라의 수명 주기를 수명 주기 소유자와 바인딩하는 데 사용된다.
