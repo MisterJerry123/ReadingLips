@@ -25,7 +25,7 @@ interface Api {
         @Body jsonParams: JsonElement
     ): Call<LoginResponse>
 
-    @GET("/pronunciation")
+    @GET("/pronunciation/text")
     fun loadText(
 
     ):Call<LoadTextResponse>

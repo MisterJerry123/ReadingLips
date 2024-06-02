@@ -72,6 +72,8 @@ class PronunciationTestNEW:AppCompatActivity() {
     lateinit var drawer : DrawerLayout
     private val loadingDialog = PronunciationTestLoadingFragmentDialog()
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPronunciationTestDoingNewBinding.inflate(layoutInflater)
@@ -324,7 +326,7 @@ class PronunciationTestNEW:AppCompatActivity() {
                     // 녹화가 완료되면 메시지를 등록하고 다시 텍스트 전환
                     is VideoRecordEvent.Finalize -> {
                         if (!recordEvent.hasError()) {
-                            showLoading()
+                            //showLoading()
 
                             val msg = "Video capture succeeded: " +
                                     "${recordEvent.outputResults.outputUri}"//동영상 저장경로
@@ -356,6 +358,7 @@ class PronunciationTestNEW:AppCompatActivity() {
                             jsonObject.put("originalText", binding.tvSubtitle.text.toString())
                             //TODO 이거 바꾸셈 이메일 계정들의 아이디로
                             jsonObject.put("userEmail", "misterjerry12345@gmail.com")
+
                             CoroutineScope(Dispatchers.Main).launch {
                                 loadingDialog.show(supportFragmentManager, loadingDialog.tag)
                                 withContext(Dispatchers.Default) {
