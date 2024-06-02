@@ -191,7 +191,7 @@ class PronunciationTestNEW:AppCompatActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 //        //return super.onCreateOptionsMenu(menu)
 //        val inflater = menuInflater
 //        inflater.inflate(R.menu.drawable_layout,menu)
@@ -323,45 +323,50 @@ class PronunciationTestNEW:AppCompatActivity() {
                         binding.imgbtnSetting.visibility = View.INVISIBLE
 
                     }
+
                     // 녹화가 완료되면 메시지를 등록하고 다시 텍스트 전환
-                    is VideoRecordEvent.Finalize -> {
+                    is VideoRecordEvent.Finalize ->  {
+
                         if (!recordEvent.hasError()) {
                             //showLoading()
 
                             val msg = "Video capture succeeded: " +
                                     "${recordEvent.outputResults.outputUri}"//동영상 저장경로
-                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT)
-                                .show()
-                            //Log.d(TAG, msg)
-
-                            val returnFilePath = changeResolution(getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
-                            Log.d("PronunciationTestNEW_TAG_new",returnFilePath.toString())
-
-                            val videoBytes = convertVideoToBytes(returnFilePath.toString())
-                            //val videoBytes = convertVideoToBytes(getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
-                            Log.d("PronunciationTestNEW_TAG_old",getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
-
-                            Log.d("PronunciationTESTNEW_TAG_videoBytes", recordEvent.outputResults.outputUri.toString())
-
-                            Log.d("PronunciationTESTNEW_TAG_", recordEvent.outputResults.outputUri.toString())
-                            //Log.d("PronunciationTESTNEW_TAG_", logByteArray(videoBytes!!,"PronunciationTESTNEW_TAG_").toString())
-                            Log.d("PronunciationTESTNEW_TAG_", videoBytes.toString())
-
-
-                            val videoBytesBase64 = Base64.encodeToString(videoBytes, Base64.DEFAULT)
-                            Log.d("PronunciationTestNEW_TAG",videoBytesBase64)
-//TODO 통신코드 임시 비활성화
-
-                            //json만들기
-                            val jsonObject = JSONObject()
-                            jsonObject.put("audio", videoBytesBase64)
-                            jsonObject.put("originalText", binding.tvSubtitle.text.toString())
-                            //TODO 이거 바꾸셈 이메일 계정들의 아이디로
-                            jsonObject.put("userEmail", "misterjerry12345@gmail.com")
-
                             CoroutineScope(Dispatchers.Main).launch {
                                 loadingDialog.show(supportFragmentManager, loadingDialog.tag)
                                 withContext(Dispatchers.Default) {
+
+                                    runOnUiThread {
+                                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
+
+                                    //Log.d(TAG, msg)
+
+                                    val returnFilePath = changeResolution(getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
+                                    Log.d("PronunciationTestNEW_TAG_new",returnFilePath.toString())
+
+                                    val videoBytes = convertVideoToBytes(returnFilePath.toString())
+                                    //val videoBytes = convertVideoToBytes(getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
+                                    Log.d("PronunciationTestNEW_TAG_old",getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
+
+                                    Log.d("PronunciationTESTNEW_TAG_videoBytes", recordEvent.outputResults.outputUri.toString())
+
+                                    Log.d("PronunciationTESTNEW_TAG_", recordEvent.outputResults.outputUri.toString())
+                                    //Log.d("PronunciationTESTNEW_TAG_", logByteArray(videoBytes!!,"PronunciationTESTNEW_TAG_").toString())
+                                    Log.d("PronunciationTESTNEW_TAG_", videoBytes.toString())
+
+
+                                    val videoBytesBase64 = Base64.encodeToString(videoBytes, Base64.DEFAULT)
+                                    Log.d("PronunciationTestNEW_TAG",videoBytesBase64)
+//TODO 통신코드 임시 비활성화
+
+                                    //json만들기
+                                    val jsonObject = JSONObject()
+                                    jsonObject.put("audio", videoBytesBase64)
+                                    jsonObject.put("originalText", binding.tvSubtitle.text.toString())
+                                    //TODO 이거 바꾸셈 이메일 계정들의 아이디로
+                                    jsonObject.put("userEmail", "misterjerry12345@gmail.com")
 
 
                                     val pronunciationTestThread = Thread{
@@ -370,6 +375,18 @@ class PronunciationTestNEW:AppCompatActivity() {
                                         val response = RetrofitClient.instance.uploadPronunciationTestVideo(JsonParser.parseString(jsonObject.toString())).execute()
                                         if(response.isSuccessful){
                                             Log.d("PronunciationTestNEW_TAG",response.body()?.accuracy.toString())
+                                            loadingDialog.dismiss()
+                                            loadScript() //중단 이후 새로운 자막 불러오기
+                                            runOnUiThread {
+                                                binding.btnLrStop.text = "발음테스트 시작"
+                                                //binding.tvSubtitle.visibility = View.INVISIBLE
+                                                //버튼들 안보이게 해서 비활성화
+                                                binding.ibtnHamburgerManu.visibility = View.VISIBLE
+                                                binding.imgbtnCamerachange.visibility = View.VISIBLE
+                                                binding.imgbtnSetting.visibility = View.VISIBLE
+                                            }
+
+
                                         }
                                         Log.d("PronunciationTestNEW_TAG",response.toString())
                                         Log.d("PronunciationTestNEW_TAG",response.body().toString())
@@ -378,7 +395,7 @@ class PronunciationTestNEW:AppCompatActivity() {
                                     pronunciationTestThread.start()
 
                                 }
-                                loadingDialog.dismiss()
+
                             }
 
 
@@ -392,28 +409,11 @@ class PronunciationTestNEW:AppCompatActivity() {
 //                            text = getString(R.string.start_capture)
 //                            isEnabled = true
 //                        }
-                        binding.btnLrStop.text="발음테스트 시작"
-                        //binding.tvSubtitle.visibility = View.INVISIBLE
-                        //버튼들 안보이게 해서 비활성화
-                        binding.ibtnHamburgerManu.visibility = View.VISIBLE
-                        binding.imgbtnCamerachange.visibility = View.VISIBLE
-                        binding.imgbtnSetting.visibility = View.VISIBLE
-                        loadScript() //중단 이후 새로운 자막 불러오기
+
                     }
+
                 }
             }
-    }
-    private fun showLoading() {
-        CoroutineScope(Dispatchers.Main).launch {
-            loadingDialog.show(supportFragmentManager, loadingDialog.tag)
-            withContext(Dispatchers.Default) {
-
-
-
-
-            }
-            loadingDialog.dismiss()
-        }
     }
     private fun startCamera() {
         // ProcessCameraProvider 인스턴스를 생성한다.

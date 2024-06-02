@@ -29,6 +29,12 @@ data class UploadPronunciationTestVideoResponse(
     val accuracy : Int
 )
 
+data class LoadPronunciationHistoryResponse(
+    val originalText: String,
+    val pronunciationText: String,
+    val accuracy: Double
+)
+
 //
 //data class ChangeForgotPassword(
 //    val studentId: String,

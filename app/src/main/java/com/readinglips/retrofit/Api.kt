@@ -36,6 +36,11 @@ interface Api {
 
     ):Call<UploadPronunciationTestVideoResponse>
 
+    @GET("/pronunciation")
+    fun loadPronunciationHistory(
+        @Query("userEmail") userEmail : String
+    ):Call<ArrayList<LoadPronunciationHistoryResponse>>
+
 
 
 
