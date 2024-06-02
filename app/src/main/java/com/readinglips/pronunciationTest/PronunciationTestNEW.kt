@@ -336,12 +336,15 @@ class PronunciationTestNEW:AppCompatActivity() {
 
 
                             val videoBytesBase64 = Base64.encodeToString(videoBytes, Base64.DEFAULT)
+                            Log.d("PronunciationTestNEW_TAG",videoBytesBase64)
 //TODO 통신코드 임시 비활성화
 
                             //json만들기
                             val jsonObject = JSONObject()
-                            jsonObject.put("video", videoBytesBase64)
+                            jsonObject.put("audio", videoBytesBase64)
                             jsonObject.put("originalText", binding.tvSubtitle.text.toString())
+                            //TODO 이거 바꾸셈 이메일 계정들의 아이디로
+                            jsonObject.put("userEmail", "misterjerry12345@gmail.com")
 
                             val pronunciationTestThread = Thread{
 
@@ -498,7 +501,7 @@ class PronunciationTestNEW:AppCompatActivity() {
         return filePath
     }
 
-    private fun changeResolution(filePath:String) : Uri{
+    private fun changeResolution(filePath:String) : Uri{ //TODO 해상도 변경 함수
 
         val inputVideoPath = filePath
 
@@ -506,8 +509,8 @@ class PronunciationTestNEW:AppCompatActivity() {
         var outputVideoPath = inputVideoPath.substring(0, inputVideoPath.length - 4)+"after.mp4"
         Log.d("PronunciationTestNEW_TAG_changeResolution",outputVideoPath.toString())
 
-// FFmpeg을 사용하여 해상도를 244x244로 변경
-        val cmd = "-i $inputVideoPath -vf scale=240:240 $outputVideoPath"
+// FFmpeg을 사용하여 해상도를 1x1로 변경
+        val cmd = "-i $inputVideoPath -vf scale=1:1 $outputVideoPath"
         val executionId = FFmpeg.execute(cmd)
 
         if (executionId != 0) {
@@ -517,6 +520,8 @@ class PronunciationTestNEW:AppCompatActivity() {
         }
         return outputVideoPath.toUri()
     }
+
+
 
 
 

@@ -5,10 +5,11 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val BASEURL = "http://144.24.87.139:8086/"
+    private const val BASEURL = "http://144.24.87.139:8080/"
     val instance : Api by lazy {
         //로깅 인터셉터 설정
         val logging = HttpLoggingInterceptor()
@@ -24,6 +25,9 @@ object RetrofitClient {
         //커스텀okhttp클라이언트 생성
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(logging)
+            .connectTimeout(5, TimeUnit.MINUTES)  // 연결 타임아웃 설정
+            .readTimeout(5, TimeUnit.MINUTES)     // 읽기 타임아웃 설정
+            .writeTimeout(5, TimeUnit.MINUTES)    // 쓰기 타임아웃 설정
             .build()
 
 

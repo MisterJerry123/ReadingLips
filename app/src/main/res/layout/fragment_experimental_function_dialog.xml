@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".mypage.myInformation.AccountDeleteDialogFragment"
     >
 
  <TextView
@@ -22,7 +21,6 @@
      android:text="회원탈퇴"
      android:textSize="15sp"
      android:textColor="#757575"
-     android:fontFamily="@font/pretendardregular"
      />
     <TextView
         android:id="@+id/tv_delete_account_explain"
@@ -31,7 +29,6 @@
         android:text="정말 탈퇴하실 건가요?\n탈퇴 이후 계정 복구는 어렵습니다"
         android:lineSpacingExtra="5dp"
         android:textSize="15sp"
-        android:fontFamily="@font/pretendardregular"
         app:layout_constraintTop_toBottomOf="@id/tv_delete_account_indicator"
         app:layout_constraintBottom_toTopOf="@id/iv_icon_dialog"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +42,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:src="@drawable/img_delete_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_delete_account_explain" />
@@ -55,7 +51,6 @@
         android:id="@+id/btn_leave"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendardregular"
         android:textSize="15sp"
         android:textColor="#858585"
         android:text="떠나기"
@@ -75,7 +70,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_leave"
         android:background="#0000"
-        android:fontFamily="@font/pretendardregular"
         android:textSize="15sp"
         android:text="아니요"
         android:textColor="#FF0000"

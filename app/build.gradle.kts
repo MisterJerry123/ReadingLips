@@ -68,7 +68,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     //FFmpeg
-    implementation ("com.arthenica:mobile-ffmpeg-min:4.4.LTS")
+    implementation ("com.arthenica:mobile-ffmpeg-audio:4.4.LTS")
 
 
 }
