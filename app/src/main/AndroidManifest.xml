@@ -43,7 +43,7 @@
             android:name=".lipReading.ExperimentalFunctionFragment"
             android:exported="false" />
         <activity
-            android:name=".lipReading.CameraCopy"
+            android:name=".login.MainActivity"
             android:exported="false" />
         <activity android:name=".login.singup.InputInformation"
             android:exported="false"/>
@@ -97,7 +97,7 @@
             android:name=".lipReading.LipreadingTestAudio"
             android:exported="false" />
         <activity
-            android:name=".login.MainActivity"
+            android:name=".lipReading.CameraCopy"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
