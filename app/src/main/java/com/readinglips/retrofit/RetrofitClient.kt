@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val BASEURL = "http://144.24.87.139:8080/"
+    private const val BASEURL = "http://192.168.0.107:8080/"
     val instance : Api by lazy {
         //로깅 인터셉터 설정
         val logging = HttpLoggingInterceptor()

@@ -3,6 +3,7 @@ package com.readinglips.mypage
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.Gravity
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -16,11 +17,12 @@ import com.readinglips.lipReading.CameraCopy
 import com.readinglips.lipReading.PronunciationTestNEW
 import com.withsejong.retrofit.LoadPronunciationHistoryResponse
 
+import com.withsejong.retrofit.RetrofitClient
+
 class PronunciationTestHistory:AppCompatActivity() {
     private lateinit var binding : ActivityPronunciationTestHistoryBinding
     lateinit var drawer : DrawerLayout
-
-
+    private  var pronunciationList = ArrayList<LoadPronunciationHistoryResponse>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,15 +32,37 @@ class PronunciationTestHistory:AppCompatActivity() {
 
 
         //TODO 추후에 서버에서 받은 데이터로 띄울 것ㅑ
-        val mockData = arrayListOf <LoadPronunciationHistoryResponse>(
-            LoadPronunciationHistoryResponse("간장공장공장장","간장공장공장장",1.0),
-            LoadPronunciationHistoryResponse("된장공장공장장","됀장공장공장장",0.8),
+//        val mockData = arrayListOf <LoadPronunciationHistoryResponse>(
+//            LoadPronunciationHistoryResponse("간장공장공장장","간장공장공장장",1.0),
+//            LoadPronunciationHistoryResponse("된장공장공장장","됀장공장공장장",0.8),
+//
+//            LoadPronunciationHistoryResponse("쌈장공장공장장","썀장굥장굥장장",.6),
+//
+//            )
 
-            LoadPronunciationHistoryResponse("쌈장공장공장장","썀장굥장굥장장",.6),
+        val getPronunciationListThread= Thread{
 
-            )
+            val response = RetrofitClient
+                .instance
+                .getPronunciationList("misterjerry12345@gmail.com")
+                .execute()
+
+            if(response.isSuccessful){
+                /**
+                 * TODO : NULL 처리 하세영
+                 */
+                Log.d("PronunciationTestHistory_TAG", response.body().toString())
+                pronunciationList.addAll(response.body()!!)
 
 
+            }
+
+        }
+        getPronunciationListThread.join()
+        getPronunciationListThread.start()
+        Log.d("PronunciationTestHistory_TAG", pronunciationList.toString())
+        binding.rcvTestHistory.adapter = PronunciationTestHistoryAdapter(pronunciationList)
+        binding.rcvTestHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val drawerbtn = binding.ibtnHamburgerManu
         drawerbtn.setOnClickListener {
             drawer.openDrawer(Gravity.LEFT)
@@ -87,7 +111,7 @@ class PronunciationTestHistory:AppCompatActivity() {
         }
 
 
-        binding.rcvTestHistory.adapter=PronunciationTestHistoryAdapter(mockData)
-        binding.rcvTestHistory.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+//        binding.rcvTestHistory.adapter=PronunciationTestHistoryAdapter(mockData)
+//        binding.rcvTestHistory.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
     }
 }
