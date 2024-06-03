@@ -1,5 +1,6 @@
 package com.withsejong.retrofit
 
+import androidx.camera.core.DynamicRange.BitDepth
 import com.google.gson.JsonElement
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -64,7 +65,10 @@ interface Api {
     ):Call<ChangePwResponse>
 
 
-
+    @GET("/pronunciation")
+    fun getPronunciationList(
+        @Query("userEmail") userEmail: String
+    ):Call<ArrayList<LoadPronunciationHistoryResponse>>
 
 
     //아래 api는 모두 지울 것
