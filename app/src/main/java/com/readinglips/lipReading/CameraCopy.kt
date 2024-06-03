@@ -144,8 +144,6 @@ class CameraCopy:AppCompatActivity() {
                 editor.apply()
                 startActivity(intentCurrentActivity)
                 finish()
-
-
             }
         }
 
