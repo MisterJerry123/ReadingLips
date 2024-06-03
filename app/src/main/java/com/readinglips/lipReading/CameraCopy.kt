@@ -181,61 +181,61 @@ class CameraCopy:AppCompatActivity() {
 
 
 
-
-    private fun takePhoto() {
-        // Get a stable reference of the modifiable image capture use case
-        // ImageCapture UseCase에 대한 참조를 가져온다. 만약 초기화되지 않았다면 함수를 종료.
-        // UseCase는 이미지 캡처가 설정되기 전에 사진 버튼을 탭하면 null 된다.
-        val imageCapture = imageCapture ?: return
-
-        // Create time stamped name and MediaStore entry.
-        // MediaStore 콘텐츠 값을 만든다.
-        // MediaStore의 표시 이름이 고유하도록 현재 시간을 기준으로 타임스탬프를 사용한다.
-        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
-            .format(System.currentTimeMillis())
-
-        // ContentValues를 사용하여 이미지에 대한 메타데이터 설정
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            // Android Q 이상에서는 RELATIVE_PATH를 사용하여 저장 경로 지정
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
-            }
-        }
-
-        // Create output options object which contains file + metadata
-        // OutputFileOptions 객체를 생성.
-        // 이미지 저장 옵션 설정. MediaStore를 통해 이미지 저장 위치와 메타데이터 지정
-        // 이 객체에서 원하는 출력 방법을 지정할 수 있다.
-        val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(contentResolver,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues)
-            .build()
-
-        // Set up image capture listener, which is triggered after photo has
-        // been taken
-        // takePicture()를 호출한다. 이미지 캡처 및 저장
-        // outputOptions, 실행자, 이미지가 저장될 때 콜백을 전달
-        imageCapture.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(this),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onError(exc: ImageCaptureException) {
-                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-                }
-
-                // 캡처에 실패하지 않으면 사진을 저장하고 완료되었다는 토스트 메시지를 표시한다.
-                override fun
-                        onImageSaved(output: ImageCapture.OutputFileResults){
-                    val msg = "Photo capture succeeded: ${output.savedUri}"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, msg)
-                }
-            }
-        )
-    }
+//
+//    private fun takePhoto() {
+//        // Get a stable reference of the modifiable image capture use case
+//        // ImageCapture UseCase에 대한 참조를 가져온다. 만약 초기화되지 않았다면 함수를 종료.
+//        // UseCase는 이미지 캡처가 설정되기 전에 사진 버튼을 탭하면 null 된다.
+//        val imageCapture = imageCapture ?: return
+//
+//        // Create time stamped name and MediaStore entry.
+//        // MediaStore 콘텐츠 값을 만든다.
+//        // MediaStore의 표시 이름이 고유하도록 현재 시간을 기준으로 타임스탬프를 사용한다.
+//        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
+//            .format(System.currentTimeMillis())
+//
+//        // ContentValues를 사용하여 이미지에 대한 메타데이터 설정
+//        val contentValues = ContentValues().apply {
+//            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+//            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+//            // Android Q 이상에서는 RELATIVE_PATH를 사용하여 저장 경로 지정
+//            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+//                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
+//            }
+//        }
+//
+//        // Create output options object which contains file + metadata
+//        // OutputFileOptions 객체를 생성.
+//        // 이미지 저장 옵션 설정. MediaStore를 통해 이미지 저장 위치와 메타데이터 지정
+//        // 이 객체에서 원하는 출력 방법을 지정할 수 있다.
+//        val outputOptions = ImageCapture.OutputFileOptions
+//            .Builder(contentResolver,
+//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                contentValues)
+//            .build()
+//
+//        // Set up image capture listener, which is triggered after photo has
+//        // been taken
+//        // takePicture()를 호출한다. 이미지 캡처 및 저장
+//        // outputOptions, 실행자, 이미지가 저장될 때 콜백을 전달
+//        imageCapture.takePicture(
+//            outputOptions,
+//            ContextCompat.getMainExecutor(this),
+//            object : ImageCapture.OnImageSavedCallback {
+//                override fun onError(exc: ImageCaptureException) {
+//                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+//                }
+//
+//                // 캡처에 실패하지 않으면 사진을 저장하고 완료되었다는 토스트 메시지를 표시한다.
+//                override fun
+//                        onImageSaved(output: ImageCapture.OutputFileResults){
+//                    val msg = "Photo capture succeeded: ${output.savedUri}"
+//                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+//                    Log.d(TAG, msg)
+//                }
+//            }
+//        )
+//    }
 
     // Implements VideoCapture use case, including start and stop capturing.
     private fun captureVideo() {

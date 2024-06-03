@@ -15,10 +15,13 @@ import com.readinglips.databinding.ActivityPronunciationTestHistoryBinding
 import com.readinglips.lipReading.CameraCopy
 import com.readinglips.lipReading.PronunciationTestNEW
 import com.withsejong.retrofit.LoadLipReadingHistoryResponse
+import com.withsejong.retrofit.LoadPronunciationHistoryResponse
+import com.withsejong.retrofit.RetrofitClient
 
 class LipReadingHistory:AppCompatActivity() {
     private lateinit var binding : ActivityLipreadingHistoryBinding
     lateinit var drawer : DrawerLayout
+    private  var lipReadingList = ArrayList<LoadLipReadingHistoryResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,17 +30,30 @@ class LipReadingHistory:AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val mockData = arrayListOf<LoadLipReadingHistoryResponse>(
-            LoadLipReadingHistoryResponse("안녕하시요","2024-06-02T18:52:23.363Z"),
-            LoadLipReadingHistoryResponse("하이 헬로","2024-06-03T12:52:23.363Z"),
+//        val mockData = arrayListOf<LoadLipReadingHistoryResponse>(
+//            LoadLipReadingHistoryResponse("안녕하시요","2024-06-02T18:52:23.363Z"),
+//            LoadLipReadingHistoryResponse("하이 헬로","2024-06-03T12:52:23.363Z"),
+//            LoadLipReadingHistoryResponse("김태식의 두마리 치킨","2024-06-03T18:52:23.363Z"),
+//            LoadLipReadingHistoryResponse("이다예 복싱장","2024-06-04T02:52:23.363Z"),
+//            )
 
-            LoadLipReadingHistoryResponse("김태식의 두마리 치킨","2024-06-03T18:52:23.363Z"),
+        val loadLipReadingHistoryThread=Thread{
+            val response = RetrofitClient.instance.loadLipReadingHistory("misterjerry12345@gmail.com").execute()
 
-            LoadLipReadingHistoryResponse("이다예 복싱장","2024-06-04T02:52:23.363Z"),
+            if(response.isSuccessful){
+                lipReadingList.addAll(response.body()!!)
 
+                runOnUiThread {
+                    binding.rcvLipReadingHistory.adapter = LipReadingHistoryAdapter(lipReadingList)
+                    binding.rcvLipReadingHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+                }
 
-            )
+            }
+
+        }
+        loadLipReadingHistoryThread.join()
+        loadLipReadingHistoryThread.start()
 
         val drawerbtn = binding.ibtnHamburgerManu
         drawerbtn.setOnClickListener {
@@ -58,7 +74,6 @@ class LipReadingHistory:AppCompatActivity() {
                     //TODO 추후에 시간나면 2번 클릭시 종료합니다로 변경
                     finish()
                 }
-
             }
         }
         this.onBackPressedDispatcher.addCallback(this,backActionCallback)
@@ -85,15 +100,5 @@ class LipReadingHistory:AppCompatActivity() {
             }
             true
         }
-
-
-
-        binding.rcvLipReadingHistory.adapter = LipReadingHistoryAdapter(mockData)
-        binding.rcvLipReadingHistory.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-
-
-
     }
-
-
 }

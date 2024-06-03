@@ -21,7 +21,6 @@ class PronunciationTestHistoryAdapter(val testHistory : ArrayList<LoadPronunciat
             holder.originalScript.text="원본문장: ${testHistory[position].originalText}"
             holder.afterTestScript.text="발음분석 결과: ${testHistory[position].pronunciationText}"
             holder.accuracy.text = "정확도: ${testHistory[position].accuracy*100}%"
-
         }
     }
 }

@@ -71,6 +71,7 @@ interface Api {
     ):Call<ArrayList<LoadPronunciationHistoryResponse>>
 
 
+
     //아래 api는 모두 지울 것
 
     //http://43.201.66.172:8080/http://12.12.12.12:8080/checkNickname?nickname=misterjerry

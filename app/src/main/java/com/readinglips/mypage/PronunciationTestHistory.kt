@@ -29,9 +29,7 @@ class PronunciationTestHistory:AppCompatActivity() {
         binding = ActivityPronunciationTestHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-        //TODO 추후에 서버에서 받은 데이터로 띄울 것ㅑ
+        //TODO 추후에 서버에서 받은 데이터로 띄울 것
 //        val mockData = arrayListOf <LoadPronunciationHistoryResponse>(
 //            LoadPronunciationHistoryResponse("간장공장공장장","간장공장공장장",1.0),
 //            LoadPronunciationHistoryResponse("된장공장공장장","됀장공장공장장",0.8),
@@ -51,18 +49,24 @@ class PronunciationTestHistory:AppCompatActivity() {
                 /**
                  * TODO : NULL 처리 하세영
                  */
-                Log.d("PronunciationTestHistory_TAG", response.body().toString())
+                Log.d("PronunciationTestHistory_TAG1", response.body().toString())
                 pronunciationList.addAll(response.body()!!)
+                Log.d("PronunciationTestHistory_TAG2", pronunciationList.toString())
 
+                runOnUiThread {
+                    binding.rcvTestHistory.adapter = PronunciationTestHistoryAdapter(pronunciationList)
+                    binding.rcvTestHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+
+                }
 
             }
-
         }
         getPronunciationListThread.join()
         getPronunciationListThread.start()
-        Log.d("PronunciationTestHistory_TAG", pronunciationList.toString())
-        binding.rcvTestHistory.adapter = PronunciationTestHistoryAdapter(pronunciationList)
-        binding.rcvTestHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        Log.d("PronunciationTestHistory_TAG3", pronunciationList.toString())
+
         val drawerbtn = binding.ibtnHamburgerManu
         drawerbtn.setOnClickListener {
             drawer.openDrawer(Gravity.LEFT)
