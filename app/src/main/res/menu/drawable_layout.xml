@@ -28,12 +28,17 @@
             android:title="마이페이지">
 
             <menu>
+                <item android:id="@+id/menu_change_my_info"
+                    android:title="내 정보 변경"
+                    app:showAsAction="ifRoom"/>
+
                 <item android:id="@+id/menu_lipreading_history"
                     android:title="립리딩 내역조회"
                     app:showAsAction="ifRoom"/>
                 <item android:id="@+id/menu_pronunciation_history"
                     android:title="발음테스트 내역조회"
                     app:showAsAction="ifRoom"/>
+
 
             </menu>
         </item>
