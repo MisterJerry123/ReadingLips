@@ -10,6 +10,8 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.readinglips.R
+import com.readinglips.changeInfo.ChangePassword
+import com.readinglips.credits.Credits
 import com.readinglips.databinding.ActivityLipreadingHistoryBinding
 import com.readinglips.databinding.ActivityPronunciationTestHistoryBinding
 import com.readinglips.lipReading.CameraCopy
@@ -81,12 +83,18 @@ class LipReadingHistory:AppCompatActivity() {
         val intentPronunciationTest = Intent(this, PronunciationTestNEW::class.java)
         val intentPronunciationTestHistory = Intent(this, PronunciationTestHistory::class.java)
         val intentLipReading = Intent(this, CameraCopy::class.java)
+        val intentDevelops = Intent(this, Credits::class.java)
+        val intentChangePassword = Intent(this, ChangePassword::class.java)
 
 
         binding.navigationview.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.menu_pronounce_test->{
                     startActivity(intentPronunciationTest)
+                    finish()
+                }
+                R.id.menu_change_password->{
+                    startActivity(intentChangePassword)
                     finish()
                 }
                 R.id.menu_pronunciation_history->{
@@ -97,6 +105,11 @@ class LipReadingHistory:AppCompatActivity() {
                     startActivity(intentLipReading)
                     finish()
                 }
+                R.id.menu_introducing->{
+                    startActivity(intentDevelops)
+                    finish()
+                }
+
             }
             true
         }

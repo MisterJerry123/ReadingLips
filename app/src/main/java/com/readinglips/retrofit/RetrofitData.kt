@@ -49,7 +49,17 @@ data class SendEmailCodeResponse(
 data class ChangePwResponse(
     val email: String
 )
+data class UploadSubtitleResponse(
+    val subtitle: String,
+    val userEmail : String
+)
 
+data class Develops(
+    val part:String,
+    val name:String,
+    val major:String,
+    val id:Int
+)
 
 
 //

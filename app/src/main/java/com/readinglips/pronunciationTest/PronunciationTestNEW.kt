@@ -42,10 +42,13 @@ import com.arthenica.mobileffmpeg.FFmpeg
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.readinglips.R
+import com.readinglips.changeInfo.ChangePassword
+import com.readinglips.credits.Credits
 import com.readinglips.databinding.ActivityPronunciationTestDoingNewBinding
 import com.readinglips.mypage.LipReadingHistory
 import com.readinglips.mypage.PronunciationTestHistory
 import com.readinglips.pronunciationTest.PronunciationTestLoadingFragmentDialog
+import com.readinglips.pronunciationTest.PronunciationTestResultFragmentDialog
 import com.withsejong.retrofit.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -70,7 +73,8 @@ class PronunciationTestNEW:AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
 
     lateinit var drawer : DrawerLayout
-    private val loadingDialog = PronunciationTestLoadingFragmentDialog()
+    //private val loadingDialog = PronunciationTestLoadingFragmentDialog()
+    private val loadingDialog = PronunciationTestResultFragmentDialog()
 
 
 
@@ -128,6 +132,8 @@ class PronunciationTestNEW:AppCompatActivity() {
         val intentLipReading = Intent(this,CameraCopy::class.java)
         val intentPronunciationTestHistory = Intent(this,PronunciationTestHistory::class.java)
         val intentLipReadingHistory = Intent(this,LipReadingHistory::class.java)
+        val intentDevelops = Intent(this, Credits::class.java)
+        val intentChangePassword = Intent(this, ChangePassword::class.java)
 
 
 
@@ -138,6 +144,12 @@ class PronunciationTestNEW:AppCompatActivity() {
                     startActivity(intentLipReading)
                     finish()
                 }
+
+                R.id.menu_change_password->{
+                    startActivity(intentChangePassword)
+                    finish()
+                }
+
                 R.id.menu_pronunciation_history->{
                     startActivity(intentPronunciationTestHistory)
                     finish()
@@ -146,11 +158,21 @@ class PronunciationTestNEW:AppCompatActivity() {
                     startActivity(intentLipReadingHistory)
                     finish()
                 }
+                R.id.menu_introducing->{
+                    startActivity(intentDevelops)
+                    finish()
+                }
             }
             true
         }
 
         val intentCurrentActivity = Intent(this, PronunciationTestNEW::class.java)
+        val functionDialog = ExperimentalFunctionFragment()
+
+        binding.imgbtnSetting.setOnClickListener {
+            functionDialog.show(supportFragmentManager, functionDialog.tag)
+
+        }
         binding.imgbtnCamerachange.setOnClickListener {
             if(cameraSelector==CameraSelector.DEFAULT_FRONT_CAMERA){
                 cameraSelector=CameraSelector.DEFAULT_BACK_CAMERA
@@ -357,6 +379,7 @@ class PronunciationTestNEW:AppCompatActivity() {
                                     Log.d("PronunciationTESTNEW_TAG_", videoBytes.toString())
 
 
+
                                     val videoBytesBase64 = Base64.encodeToString(videoBytes, Base64.DEFAULT)
                                     Log.d("PronunciationTestNEW_TAG",videoBytesBase64)
 //TODO 통신코드 임시 비활성화
@@ -524,7 +547,7 @@ class PronunciationTestNEW:AppCompatActivity() {
 //        }
     }
 
-    private fun getRealPathFromUri(uri: Uri): String? {
+     fun getRealPathFromUri(uri: Uri): String? {
         val contentResolver: ContentResolver = contentResolver
         val filePathColumn = arrayOf(MediaStore.MediaColumns.DATA)
         val cursor = contentResolver.query(uri, filePathColumn, null, null, null)

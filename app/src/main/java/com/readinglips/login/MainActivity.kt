@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-
         val intentCreateAccount = Intent(this, CheckEmail::class.java)
         val intentLogin = Intent(this, CameraCopy::class.java)
         val intentForgotPw = Intent(this, FindPassword::class.java)
@@ -53,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         if (response.isSuccessful) {
                             val tokenSharedPreferences = getSharedPreferences("token", MODE_PRIVATE)
+
                             val tokenEditor = tokenSharedPreferences.edit()
                             //토큰들 쉐어드프리퍼런스에 저장
                             tokenEditor.putString(
@@ -66,6 +65,10 @@ class MainActivity : AppCompatActivity() {
                             tokenEditor.putString(
                                 "refreshToken",
                                 response.body()?.authToken?.refreshToken.toString()
+                            )
+                            tokenEditor.putString(
+                                "email",
+                                binding.etId.text.toString()
                             )
                             tokenEditor.apply()
                             startActivity(intentLogin)

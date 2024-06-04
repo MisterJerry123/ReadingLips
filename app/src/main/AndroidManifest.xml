@@ -42,14 +42,15 @@
         <activity
             android:name=".lipReading.ExperimentalFunctionFragment"
             android:exported="false" />
+
+
         <activity
-            android:name=".lipReading.CameraCopy"
-            android:exported="false" />
+            android:name=".login.MainActivity"
+            android:exported="false"/>
         <activity android:name=".login.singup.InputInformation"
             android:exported="false"/>
         <activity android:name=".login.fountPassword.ChangePassword"
             android:exported="false"/>
-
         <activity android:name=".login.fountPassword.FindPassword"
             android:exported="false"/>
         <activity
@@ -96,12 +97,16 @@
         <activity
             android:name=".lipReading.LipreadingTestAudio"
             android:exported="false" />
+        <activity android:name=".credits.Credits"
+            android:exported="false"/>
+        <activity android:name=".changeInfo.ChangePassword"
+            android:exported="false"/>
         <activity
-            android:name=".login.MainActivity"
+            android:name=".lipReading.CameraCopy"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

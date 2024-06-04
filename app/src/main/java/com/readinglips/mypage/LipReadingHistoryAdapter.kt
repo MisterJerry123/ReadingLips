@@ -27,13 +27,14 @@ class LipReadingHistoryAdapter(val lipReadingHistory : ArrayList<LoadLipReadingH
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         if(holder is LipReadingHistoryViewHolder){
-            val utcDateTime = ZonedDateTime.parse(lipReadingHistory[position].createdAt, DateTimeFormatter.ISO_DATE_TIME)
-            // 한국 시간대로 변환
-            val koreaZoneId = ZoneId.of("Asia/Seoul")
-            val koreaDateTime = utcDateTime.withZoneSameInstant(koreaZoneId)
-
-
-            holder.createdAt.text = "립리딩 시간: ${koreaDateTime}"
+//            val utcDateTime = ZonedDateTime.parse(lipReadingHistory[position].createdAt, DateTimeFormatter.ISO_DATE_TIME)
+//            // 한국 시간대로 변환
+//            val koreaZoneId = ZoneId.of("Asia/Seoul")
+//            val koreaDateTime = utcDateTime.withZoneSameInstant(koreaZoneId)
+//
+//
+//            holder.createdAt.text = "립리딩 시간: ${koreaDateTime}"
+            holder.createdAt.text = "립리딩 시간: ${lipReadingHistory[position].createdAt}"
 
             holder.afterTestScript.text = "립리딩 결과: ${lipReadingHistory[position].subtitle}"
         }
