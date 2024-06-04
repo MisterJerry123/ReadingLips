@@ -56,7 +56,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
@@ -197,20 +196,22 @@ class CameraCopy: AppCompatActivity() {
             binding.ibtnHamburgerManu.visibility = View.INVISIBLE
             binding.imgbtnCamerachange.visibility = View.INVISIBLE
             binding.imgbtnSetting.visibility = View.INVISIBLE
-//runBlocking { delay(1000) }
+
             CoroutineScope(Dispatchers.Main).launch {
                 while(!isclicked){
                     binding.btnLrStop.setOnClickListener {
                         isclicked=true
                     }
 
+                    var videoThread = Thread{
                         //TODO captureVideo함수에 서버로 동영상파일 보내는 코드 추가하고 response 자막tv에 표시하고 결과 string에 추가하는 로직 추가
                         captureVideo()
-                        delay(3000)
                         Log.d("CameraCopy_TAG_capture","동영상저장됨" )
+                    }
+                    videoThread.join()
+                    videoThread.start()
 
-                // 녹화 중단부터 시작까지의 딜레이
-
+                    delay(1000)
                 }
 //                binding.btnLrStop.text = "립리딩 시작"
 //                binding.tvSubtitle.visibility = View.INVISIBLE
@@ -224,7 +225,7 @@ class CameraCopy: AppCompatActivity() {
                     jsonObject.put("subtitle", subtitleConcat)
                     jsonObject.put("userEmail","misterjerry12345@gmail.com")
 
-                   RetrofitClient.instance2.uploadSubtitle(JsonParser.parseString(jsonObject.toString())).execute()
+                    RetrofitClient.instance2.uploadSubtitle(JsonParser.parseString(jsonObject.toString())).execute()
 
                 }
                 lipReadingResultThread.join()
@@ -294,23 +295,16 @@ class CameraCopy: AppCompatActivity() {
             }
             .start(ContextCompat.getMainExecutor(this)) { recordEvent ->
                 when (recordEvent) {
-
                     is VideoRecordEvent.Start -> {
 
                         isRecording = true
 
                         // 1초 후에 녹화를 중지하는 핸들러 추가
 
-                        recording?.stop()
 
-//                        CoroutineScope(Dispatchers.Main). {
-//
-//                        }
-
-//                        Log.d("CameraCopy_TAG_capture", "stop전")
-//                        handler.postDelayed({
-//                        }, 3000)
-//                        Log.d("CameraCopy_TAG_capture", "stop후")
+                        handler.postDelayed({
+                            recording?.stop()
+                        }, 1000)
 
 
 
@@ -334,13 +328,19 @@ class CameraCopy: AppCompatActivity() {
                             Log.d("PronunciationTESTNEW_TAG_", recordEvent.outputResults.outputUri.toString())
                             //Log.d("PronunciationTESTNEW_TAG_", logByteArray(videoBytes!!,"PronunciationTESTNEW_TAG_").toString())
                             Log.d("PronunciationTESTNEW_TAG_", videoBytes.toString())
+                            val videoBytesBase64 = Base64.encodeToString(videoBytes, Base64.DEFAULT)
 
+//
+
+                            val jsonObject = JSONObject()
+                            jsonObject.put("audio", videoBytesBase64)
+
+                            val commThread = Thread {
 
 
                                 RetrofitClient.instance2.uploadSubtitle(
-
                                     JsonParser.parseString(
-                                        JSONObject().put("audio",Base64.encodeToString(videoBytes, Base64.DEFAULT)).toString()
+                                        jsonObject.toString()
                                     )
                                 )
                                     .enqueue(object : retrofit2.Callback<UploadSubtitleResponse> {
@@ -366,7 +366,9 @@ class CameraCopy: AppCompatActivity() {
                                         }
 
                                     })
-
+                            }
+                            commThread.join()
+                            commThread.start()
 
 
 
