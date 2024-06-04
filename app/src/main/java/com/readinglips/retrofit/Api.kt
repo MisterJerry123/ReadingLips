@@ -70,6 +70,11 @@ interface Api {
         @Query("userEmail") userEmail: String
     ):Call<ArrayList<LoadPronunciationHistoryResponse>>
 
+    @POST("/subtitle")
+    fun uploadSubtitle(
+        @Body jsonParams: JsonElement
+    ):Call<UploadSubtitleResponse>
+
 
 
     //아래 api는 모두 지울 것

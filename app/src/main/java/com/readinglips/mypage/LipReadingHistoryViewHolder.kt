@@ -7,5 +7,4 @@ import com.readinglips.databinding.ItemPronunciationTestHistoryBinding
 class LipReadingHistoryViewHolder(val binding : ItemLipReadingHistoryBinding): RecyclerView.ViewHolder(binding.root) {
     val createdAt = binding.tvCreatedAt
     val afterTestScript = binding.tvAfterLipReadingText
-
 }
