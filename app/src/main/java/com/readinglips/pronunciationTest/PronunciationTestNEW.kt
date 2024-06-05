@@ -73,8 +73,8 @@ class PronunciationTestNEW:AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
 
     lateinit var drawer : DrawerLayout
-    //private val loadingDialog = PronunciationTestLoadingFragmentDialog()
-    private val loadingDialog = PronunciationTestResultFragmentDialog()
+    private val loadingDialog = PronunciationTestLoadingFragmentDialog()
+    private val resultDialog = PronunciationTestResultFragmentDialog()
 
 
 
@@ -417,15 +417,14 @@ class PronunciationTestNEW:AppCompatActivity() {
                                             val result = response.body()?.pronunciationText
 
                                             val bundle = Bundle()
-                                            val fragment = PronunciationTestResultFragmentDialog()
 
                                             bundle.putString("original_script", origin)
                                             bundle.putString("accuracy", "${accuracy?.times(10)}%")
                                             bundle.putString("result_script", result)
 
-                                            fragment.arguments = bundle
+                                            resultDialog.arguments = bundle
 
-                                            fragment.show(supportFragmentManager,fragment.tag)
+                                            resultDialog.show(supportFragmentManager,resultDialog.tag)
 
 
                                         }
