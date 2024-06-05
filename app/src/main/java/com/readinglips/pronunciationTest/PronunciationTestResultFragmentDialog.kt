@@ -26,6 +26,16 @@ class PronunciationTestResultFragmentDialog:DialogFragment() {
         dialog?.window?.setBackgroundDrawableResource(R.drawable.design_pronunciation_result_dialog)
 
 
+        val originalText = arguments?.getString("original_script")
+        val result = arguments?.getString("result_script")
+        val accuracy = arguments?.getString("accuracy")
+
+        binding.tvOriginalTextIndicator.text = originalText
+        binding.tvResultStringIndicator.text = result
+        binding.tvPronunciationAccuarcyIndicator.text = accuracy
+
+
+
         binding.btnFinish.setOnClickListener {
             dismiss()
         }

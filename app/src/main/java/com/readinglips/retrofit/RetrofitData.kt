@@ -26,7 +26,7 @@ data class LoadTextResponse(
 data class UploadPronunciationTestVideoResponse(
     val originalText : String,
     val pronunciationText : String,
-    val accuracy : Int
+    val accuracy : Double
 )
 
 data class LoadPronunciationHistoryResponse(

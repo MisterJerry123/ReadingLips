@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val BASEURL = "http://192.168.0.102:8080/"
+    private const val BASEURL = "http://112.187.179.65:8080/"
 
 
 
@@ -69,7 +69,7 @@ object RetrofitClient {
 
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.102:8000/")
+            .baseUrl("http://112.187.179.65:8000/")
             .client(okHttpClient)
 
             .addConverterFactory(GsonConverterFactory.create(gson))
