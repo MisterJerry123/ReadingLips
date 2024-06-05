@@ -231,7 +231,7 @@ class CameraCopy: AppCompatActivity() {
                         put("subtitle", subtitleConcat)
                         put("userEmail", "misterjerry12345@gmail.com")
                     }
-                    RetrofitClient.instance2.uploadSubtitle(JsonParser.parseString(jsonObject.toString())).execute()
+                    RetrofitClient.instance.uploadSubtitle(JsonParser.parseString(jsonObject.toString())).execute()
                 }
 
                 val intentRestart = Intent(this@CameraCopy, CameraCopy::class.java)

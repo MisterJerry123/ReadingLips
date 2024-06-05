@@ -171,8 +171,8 @@ class PronunciationTestNEW:AppCompatActivity() {
 
         binding.imgbtnSetting.setOnClickListener {
             functionDialog.show(supportFragmentManager, functionDialog.tag)
-
         }
+
         binding.imgbtnCamerachange.setOnClickListener {
             if(cameraSelector==CameraSelector.DEFAULT_FRONT_CAMERA){
                 cameraSelector=CameraSelector.DEFAULT_BACK_CAMERA
@@ -356,6 +356,7 @@ class PronunciationTestNEW:AppCompatActivity() {
                                     "${recordEvent.outputResults.outputUri}"//동영상 저장경로
                             CoroutineScope(Dispatchers.Main).launch {
 
+                                loadingDialog.show(supportFragmentManager, loadingDialog.tag)
 
 
 
