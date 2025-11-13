@@ -32,7 +32,7 @@ class PronunciationTestResultFragmentDialog:DialogFragment() {
 
         binding.tvOriginalTextIndicator.text = originalText
         binding.tvResultStringIndicator.text = result
-        binding.tvPronunciationAccuarcyIndicator.text = accuracy
+        binding.tvPronunciationAccuarcyIndicator.text = "발음 정확도: $accuracy"
 
 
 
