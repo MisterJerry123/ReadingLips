@@ -73,8 +73,8 @@ class PronunciationTestNEW:AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
 
     lateinit var drawer : DrawerLayout
-    //private val loadingDialog = PronunciationTestLoadingFragmentDialog()
-    private val loadingDialog = PronunciationTestResultFragmentDialog()
+    private val loadingDialog = PronunciationTestLoadingFragmentDialog()
+    private val resultDialog = PronunciationTestResultFragmentDialog()
 
 
 
@@ -171,8 +171,8 @@ class PronunciationTestNEW:AppCompatActivity() {
 
         binding.imgbtnSetting.setOnClickListener {
             functionDialog.show(supportFragmentManager, functionDialog.tag)
-
         }
+
         binding.imgbtnCamerachange.setOnClickListener {
             if(cameraSelector==CameraSelector.DEFAULT_FRONT_CAMERA){
                 cameraSelector=CameraSelector.DEFAULT_BACK_CAMERA
@@ -355,7 +355,11 @@ class PronunciationTestNEW:AppCompatActivity() {
                             val msg = "Video capture succeeded: " +
                                     "${recordEvent.outputResults.outputUri}"//동영상 저장경로
                             CoroutineScope(Dispatchers.Main).launch {
+
                                 loadingDialog.show(supportFragmentManager, loadingDialog.tag)
+
+
+
                                 withContext(Dispatchers.Default) {
 
                                     runOnUiThread {
@@ -408,6 +412,20 @@ class PronunciationTestNEW:AppCompatActivity() {
                                                 binding.imgbtnCamerachange.visibility = View.VISIBLE
                                                 binding.imgbtnSetting.visibility = View.VISIBLE
                                             }
+
+                                            val origin = response.body()?.originalText
+                                            val accuracy = response.body()?.accuracy
+                                            val result = response.body()?.pronunciationText
+
+                                            val bundle = Bundle()
+
+                                            bundle.putString("original_script", origin)
+                                            bundle.putString("accuracy", "${accuracy?.times(10)}%")
+                                            bundle.putString("result_script", result)
+
+                                            resultDialog.arguments = bundle
+
+                                            resultDialog.show(supportFragmentManager,resultDialog.tag)
 
 
                                         }

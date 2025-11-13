@@ -1,6 +1,5 @@
 package com.readinglips.lipReading
 
-import androidx.appcompat.app.AppCompatActivity
 import android.Manifest
 import android.content.ContentResolver
 import android.content.ContentValues
@@ -13,31 +12,30 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Base64
-import androidx.camera.core.ImageCapture
-import androidx.camera.video.Recorder
-import androidx.camera.video.Recording
-import androidx.camera.video.VideoCapture
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import android.widget.Toast
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.core.Preview
-import androidx.camera.core.CameraSelector
 import android.util.Log
 import android.util.Size
 import android.view.Gravity
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.Preview
 import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.video.FallbackStrategy
 import androidx.camera.video.MediaStoreOutputOptions
 import androidx.camera.video.Quality
 import androidx.camera.video.QualitySelector
+import androidx.camera.video.Recorder
+import androidx.camera.video.Recording
+import androidx.camera.video.VideoCapture
 import androidx.camera.video.VideoRecordEvent
 import androidx.camera.view.LifecycleCameraController
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
@@ -56,6 +54,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
@@ -65,6 +64,8 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class CameraCopy: AppCompatActivity() {
     private lateinit var binding: ActivityLipReadingDoingBinding
@@ -197,50 +198,46 @@ class CameraCopy: AppCompatActivity() {
             binding.imgbtnCamerachange.visibility = View.INVISIBLE
             binding.imgbtnSetting.visibility = View.INVISIBLE
 
+
             CoroutineScope(Dispatchers.Main).launch {
-                while(!isclicked){
+                while (!isclicked) {
                     binding.btnLrStop.setOnClickListener {
-                        isclicked=true
+                        isclicked = true
                     }
 
-                    var videoThread = Thread{
+                    withContext(Dispatchers.IO) {
                         //TODO captureVideo함수에 서버로 동영상파일 보내는 코드 추가하고 response 자막tv에 표시하고 결과 string에 추가하는 로직 추가
-                        captureVideo()
-                        Log.d("CameraCopy_TAG_capture","동영상저장됨" )
-                    }
-                    videoThread.join()
-                    videoThread.start()
+                        repeat(maxVideos) {
+                            captureVideo()
+                            Log.d("CameraCopy_TAG_capture", "녹화 Dispatchers 생성")
+                            delay(3000)
 
-                    delay(1000)
+                        }
+                    }
+
+                    delay(10)
                 }
-//                binding.btnLrStop.text = "립리딩 시작"
-//                binding.tvSubtitle.visibility = View.INVISIBLE
-//                binding.ibtnHamburgerManu.visibility = View.VISIBLE
-//                binding.imgbtnCamerachange.visibility = View.VISIBLE
-//                binding.imgbtnSetting.visibility = View.VISIBLE
+
+                binding.btnLrStop.text = "립리딩 시작"
+                binding.tvSubtitle.visibility = View.INVISIBLE
+                binding.ibtnHamburgerManu.visibility = View.VISIBLE
+                binding.imgbtnCamerachange.visibility = View.VISIBLE
+                binding.imgbtnSetting.visibility = View.VISIBLE
                 //TODO 발음테스트 결과 String 서버로 전송
 
-                val lipReadingResultThread = Thread{
-                    val jsonObject = JSONObject()
-                    jsonObject.put("subtitle", subtitleConcat)
-                    jsonObject.put("userEmail","misterjerry12345@gmail.com")
-
-                    RetrofitClient.instance2.uploadSubtitle(JsonParser.parseString(jsonObject.toString())).execute()
-
+                withContext(Dispatchers.IO) {
+                    // I/O 작업: 발음 테스트 결과를 서버로 전송
+                    val jsonObject = JSONObject().apply {
+                        put("subtitle", subtitleConcat)
+                        put("userEmail", "misterjerry12345@gmail.com")
+                    }
+                    RetrofitClient.instance.uploadSubtitle(JsonParser.parseString(jsonObject.toString())).execute()
                 }
-                lipReadingResultThread.join()
-                lipReadingResultThread.start()
-                val intentRestart = Intent(this@CameraCopy,CameraCopy::class.java)
+
+                val intentRestart = Intent(this@CameraCopy, CameraCopy::class.java)
                 startActivity(intentRestart)
                 finish()
-
-
-
             }
-
-
-
-
 
             //            CoroutineScope(Dispatchers.Main).launch {
 //                captureVideo()
@@ -251,15 +248,12 @@ class CameraCopy: AppCompatActivity() {
 //
 //            }
 
-
-
-
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
-    private fun captureVideo() {
+    private suspend fun captureVideo() {
         val videoCapture = this.videoCapture ?: return
         binding.tvSubtitle.isEnabled = false
 
@@ -296,17 +290,10 @@ class CameraCopy: AppCompatActivity() {
             .start(ContextCompat.getMainExecutor(this)) { recordEvent ->
                 when (recordEvent) {
                     is VideoRecordEvent.Start -> {
-
                         isRecording = true
-
-                        // 1초 후에 녹화를 중지하는 핸들러 추가
-
-
-                        handler.postDelayed({
-                            recording?.stop()
-                        }, 1000)
-
-
+//                        handler.postDelayed({
+//                            recording?.stop()
+//                        }, 1000)
 
                     }
                     is VideoRecordEvent.Finalize -> {
@@ -314,78 +301,56 @@ class CameraCopy: AppCompatActivity() {
                             val msg =
                                 "Video capture succeeded: ${recordEvent.outputResults.outputUri}"
 
-
-//
                             val returnFilePath = changeResolution(getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
                             Log.d("PronunciationTestNEW_TAG_new",returnFilePath.toString())
-
                             val videoBytes = convertVideoToBytes(returnFilePath.toString())
+                            val videoBytesBase64 = Base64.encodeToString(videoBytes, Base64.DEFAULT)
+
                             //val videoBytes = convertVideoToBytes(getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
                             Log.d("PronunciationTestNEW_TAG_old",getRealPathFromUri(recordEvent.outputResults.outputUri).toString())
-
                             Log.d("PronunciationTESTNEW_TAG_videoBytes", recordEvent.outputResults.outputUri.toString())
-
                             Log.d("PronunciationTESTNEW_TAG_", recordEvent.outputResults.outputUri.toString())
                             //Log.d("PronunciationTESTNEW_TAG_", logByteArray(videoBytes!!,"PronunciationTESTNEW_TAG_").toString())
                             Log.d("PronunciationTESTNEW_TAG_", videoBytes.toString())
-                            val videoBytesBase64 = Base64.encodeToString(videoBytes, Base64.DEFAULT)
 
 //
-
                             val jsonObject = JSONObject()
                             jsonObject.put("audio", videoBytesBase64)
 
-                            val commThread = Thread {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                Log.d("CameraCopy_TAG", "서버 리퀘스트 요청")
 
+                                val response = RetrofitClient.instance2.uploadSubtitle(JsonParser.parseString(jsonObject.toString())).execute()
+                                if (response.isSuccessful) {
 
-                                RetrofitClient.instance2.uploadSubtitle(
-                                    JsonParser.parseString(
-                                        jsonObject.toString()
-                                    )
-                                )
-                                    .enqueue(object : retrofit2.Callback<UploadSubtitleResponse> {
-                                        override fun onResponse(
-                                            call: Call<UploadSubtitleResponse>,
-                                            response: Response<UploadSubtitleResponse>
-                                        ) {
-                                            if (response.isSuccessful) {
-                                                subtitleConcat += response.body()?.subtitle
-                                                binding.tvSubtitle.text = subtitleConcat
-                                                Log.d("CameraCopy_TAG", "서버로 전송됨")
+                                    if(response.body()?.subtitle.equals("null")){
 
-                                            } else {
-                                                Log.d("CameraCopy_TAG", response.toString())
-                                            }
-                                        }
-
-                                        override fun onFailure(
-                                            call: Call<UploadSubtitleResponse>,
-                                            t: Throwable
-                                        ) {
-                                            Log.d("CameraCopy_TAG", t.toString())
-                                        }
-
-                                    })
+                                    }
+                                    else{
+                                        subtitleConcat += response.body()?.subtitle ?: ""
+                                    }
+                                    withContext(Dispatchers.Main) {
+                                        binding.tvSubtitle.text = subtitleConcat
+                                    }
+                                    Log.d("CameraCopy_TAG", "서버로 전송됨")
+                                } else {
+                                    Log.d("CameraCopy_TAG", response.toString())
+                                }
                             }
-                            commThread.join()
-                            commThread.start()
 
-
-
-
-
-                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                            Log.d(TAG, msg)
+                            //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                            Log.d("CameraCopy_TAG", msg)
                         } else {
                             recording?.close()
                             recording = null
-                            Log.e(TAG, "Video capture ends with error: ${recordEvent.error}")
+                            Log.e("CameraCopy_TAG", "Video capture ends with error: ${recordEvent.error}")
                         }
                         isRecording = false
                         videoCount++
                         Log.d("CameraCopy_TAG", videoCount.toString())
+                    }
 
-                        //captureVideo()
+                    //captureVideo()
 //
 //                        binding.btnLrStop.text = "립리딩 시작"
 //                        binding.tvSubtitle.visibility = View.INVISIBLE
@@ -393,9 +358,10 @@ class CameraCopy: AppCompatActivity() {
 //                        binding.imgbtnCamerachange.visibility = View.VISIBLE
 //                        binding.imgbtnSetting.visibility = View.VISIBLE
 
-                    }
                 }
+
             }
+
     }
 
     private fun startCamera() {

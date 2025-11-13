@@ -35,7 +35,7 @@
         android:id="@+id/tv_result_string_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="립리딩 분석 결과"
+        android:text="발음 분석 결과"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@id/tv_result_string_indicator"
         app:layout_constraintStart_toStartOf="parent"
